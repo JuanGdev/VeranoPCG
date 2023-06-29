@@ -81,6 +81,7 @@ public class test : MonoBehaviour
 
                 heightMap[x, y] = avg + randomAdd;
             }
+            //  Testing merge
         }
 
         //  Square step
