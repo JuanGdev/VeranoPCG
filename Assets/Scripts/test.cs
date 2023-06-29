@@ -77,13 +77,20 @@ public class test : MonoBehaviour
                 Vector3 position = new Vector3(col * cubeSize, 0f, row * cubeSize);
 
                 GameObject cube = Instantiate(cubePrefab, position, Quaternion.identity);
+                if (height_map[row,col] == 0)
+                {
+                    cube.transform.localScale = new Vector3(cubeSize, 0.1f, cubeSize);
+                }
+                else
+                {
                 cube.transform.localScale = new Vector3(cubeSize, height_map[row, col], cubeSize);  //  Instancia del tamaño del cubo
+                }
                 cube.transform.parent = transform;
                 cube.name = height_map[row, col].ToString();
 
-                if (height_map[row,col] >= earthTrigger)
+                if (height_map[row, col] >= earthTrigger)
                 {
-                cube.GetComponentInChildren<Renderer>().material = earthMaterial;
+                    cube.GetComponentInChildren<Renderer>().material = earthMaterial;
                 }
                 else if (height_map[row, col] > grassTrigger && height_map[row, col] < earthTrigger)
                 {
