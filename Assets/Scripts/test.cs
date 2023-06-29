@@ -14,7 +14,7 @@ public class test : MonoBehaviour
     {
         n = UnityEngine.Random.Range(1, 7);
         //  Initial variables
-
+        n = 6;
 
         //  Dimensions of 2^n + 1
         int height_map_size = (int)(Mathf.Pow(2, n) + 1);
@@ -56,8 +56,9 @@ public class test : MonoBehaviour
                 Vector3 position = new Vector3(col * cubeSize, 0f, row * cubeSize);
 
                 GameObject cube = Instantiate(cubePrefab, position, Quaternion.identity);
-                cube.transform.localScale = new Vector3(cubeSize, cubeSize, cubeSize);  //  Instancia del tamaño del cubo
+                cube.transform.localScale = new Vector3(cubeSize, height_map[row,col], cubeSize);  //  Instancia del tamaño del cubo
                 cube.GetComponent<Renderer>().material.color = Color.Lerp(Color.black, Color.white, value / 10);
+
                 cube.transform.parent = transform;
                 cube.name = height_map[row, col].ToString();
             }
