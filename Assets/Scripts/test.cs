@@ -17,10 +17,22 @@ public class test : MonoBehaviour
     public int mapLenght;
     public int chunkSize;
 
+    public Material earthMaterial;
+    public Material waterMaterial;
+    public Material grassMaterial;
+
+    public float subground;
+    public float grassTrigger;
+    public float earthTrigger;
+
+
     int currentSceneIndex;
 
     void Start()
     {
+        earthTrigger = 5f;
+        grassTrigger = 2f;
+        subground = 0f;
         currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
         n = UnityEngine.Random.Range(1, 8);
@@ -41,7 +53,7 @@ public class test : MonoBehaviour
 
 
         chunkSize = height_map_size - 1;
-        randomVal = 10;
+        randomVal = 30;
         while (chunkSize > 1)
         {
             DiamondSquareStep(height_map, chunkSize, randomVal);
@@ -62,16 +74,25 @@ public class test : MonoBehaviour
         {
             for (int col = 0; col < columns; col++)
             {
-                float value = height_map[row, col];
                 Vector3 position = new Vector3(col * cubeSize, 0f, row * cubeSize);
 
                 GameObject cube = Instantiate(cubePrefab, position, Quaternion.identity);
                 cube.transform.localScale = new Vector3(cubeSize, height_map[row, col], cubeSize);  //  Instancia del tamaño del cubo
-
-                cube.GetComponentInChildren<Renderer>().material.color = Color.Lerp(Color.white, Color.black, value / 10);
-
                 cube.transform.parent = transform;
                 cube.name = height_map[row, col].ToString();
+
+                if (height_map[row,col] >= earthTrigger)
+                {
+                cube.GetComponentInChildren<Renderer>().material = earthMaterial;
+                }
+                else if (height_map[row, col] > grassTrigger && height_map[row, col] < earthTrigger)
+                {
+                    cube.GetComponentInChildren<Renderer>().material = grassMaterial;
+                }
+                else
+                {
+                    cube.GetComponentInChildren<Renderer>().material = waterMaterial;
+                }
             }
         }
     }

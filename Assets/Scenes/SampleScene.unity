@@ -353,7 +353,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d961593bba02c94a80587099fa8c2ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubePrefab: {fileID: 2532545015023117919, guid: 493711497f8f08848b87ad629e995243, type: 3}
+  cubePrefab: {fileID: 6198427059375125941, guid: ef744c2f80ebcda47878eda4ad82bf14, type: 3}
   cubeSize: 1
   n: 8
   randomVal: 0
+  height_map_size: 0
+  mapLenght: 0
+  chunkSize: 0
+  earthMaterial: {fileID: 2100000, guid: 46de34f5ed394984c98fa3ed41a22522, type: 2}
+  waterMaterial: {fileID: 2100000, guid: 9a7b37f4f189b194dab6bb6127052423, type: 2}
+  grassMaterial: {fileID: 2100000, guid: f4f5ef64c9931b24aaca6d2f39074851, type: 2}
+  subground: 0
+  grassTrigger: 0
+  earthTrigger: 0
