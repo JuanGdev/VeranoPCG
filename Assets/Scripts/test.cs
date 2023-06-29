@@ -7,8 +7,9 @@ public class test : MonoBehaviour
     //  Graphic representation of 2D matrix
     public GameObject cubePrefab; // Prefab del objeto visual de cada celda
     public float cubeSize = 1f; // Tamaño de cada cubo en el plano
-
+    public float[,] height_map;
     public int n;
+    public int randomVal;
     void Start()
     {
         n = UnityEngine.Random.Range(1, 7);
@@ -18,7 +19,7 @@ public class test : MonoBehaviour
         //  Dimensions of 2^n + 1
         int height_map_size = (int)(Mathf.Pow(2, n) + 1);
 
-        float[,] height_map = new float[height_map_size, height_map_size];
+        height_map = new float[height_map_size, height_map_size];
 
         int mapLenght = height_map.GetLength(0);
 
@@ -30,7 +31,7 @@ public class test : MonoBehaviour
 
 
         int chunkSize = height_map_size - 1;
-        int randomVal = 10;
+        randomVal = 10;
         while (chunkSize > 1)
         {
             DiamondSquareStep(height_map, chunkSize, randomVal);
