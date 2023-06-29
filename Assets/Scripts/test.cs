@@ -1,27 +1,37 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
 
 public class test : MonoBehaviour
 {
+    //  Si dejamos el pivote hacia arriba y hacia abajo, eso nos permite generar más profundida, porque así nos aseguramos
+    //  de que las alturas también van hacia abajo
     //  Graphic representation of 2D matrix
     public GameObject cubePrefab; // Prefab del objeto visual de cada celda
     public float cubeSize = 1f; // Tamaño de cada cubo en el plano
     public float[,] height_map;
     public int n;
     public int randomVal;
+    public int height_map_size;
+    public int mapLenght;
+    public int chunkSize;
+
+    int currentSceneIndex;
+
     void Start()
     {
-        n = UnityEngine.Random.Range(1, 7);
-        //  Initial variables
-        n = 6;
+        currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+
+        n = UnityEngine.Random.Range(1, 8);
+
 
         //  Dimensions of 2^n + 1
-        int height_map_size = (int)(Mathf.Pow(2, n) + 1);
+        height_map_size = (int)(Mathf.Pow(2, n) + 1);
 
         height_map = new float[height_map_size, height_map_size];
 
-        int mapLenght = height_map.GetLength(0);
+        mapLenght = height_map.GetLength(0);
 
         //  Random values at the corners of the square
         height_map[0, 0] = UnityEngine.Random.Range(1, 10);
@@ -30,7 +40,7 @@ public class test : MonoBehaviour
         height_map[mapLenght - 1, mapLenght - 1] = UnityEngine.Random.Range(1, 10);
 
 
-        int chunkSize = height_map_size - 1;
+        chunkSize = height_map_size - 1;
         randomVal = 10;
         while (chunkSize > 1)
         {
@@ -56,8 +66,9 @@ public class test : MonoBehaviour
                 Vector3 position = new Vector3(col * cubeSize, 0f, row * cubeSize);
 
                 GameObject cube = Instantiate(cubePrefab, position, Quaternion.identity);
-                cube.transform.localScale = new Vector3(cubeSize, height_map[row,col], cubeSize);  //  Instancia del tamaño del cubo
-                cube.GetComponent<Renderer>().material.color = Color.Lerp(Color.black, Color.white, value / 10);
+                cube.transform.localScale = new Vector3(cubeSize, height_map[row, col], cubeSize);  //  Instancia del tamaño del cubo
+
+                cube.GetComponentInChildren<Renderer>().material.color = Color.Lerp(Color.white, Color.black, value / 10);
 
                 cube.transform.parent = transform;
                 cube.name = height_map[row, col].ToString();
@@ -100,5 +111,14 @@ public class test : MonoBehaviour
             }
         }
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            SceneManager.LoadScene(currentSceneIndex);
+        }
+    }
+
 }
 

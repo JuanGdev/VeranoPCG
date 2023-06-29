@@ -353,7 +353,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d961593bba02c94a80587099fa8c2ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cubePrefab: {fileID: 2050272877086709760, guid: ef744c2f80ebcda47878eda4ad82bf14, type: 3}
+  cubePrefab: {fileID: 2532545015023117919, guid: 493711497f8f08848b87ad629e995243, type: 3}
   cubeSize: 1
   n: 8
   randomVal: 0
