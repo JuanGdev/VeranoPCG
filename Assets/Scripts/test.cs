@@ -1,8 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
+
 
 public class test : MonoBehaviour
 {
@@ -17,6 +16,11 @@ public class test : MonoBehaviour
     public int height_map_size;
     public int mapLenght;
     public int chunkSize;
+
+    public bool waterEnabled;
+    public bool grassEnabled;
+    public bool earthEnabled;
+
 
     public Material earthMaterial;
     public Material waterMaterial;
@@ -87,6 +91,8 @@ public class test : MonoBehaviour
                 Vector3 position = new Vector3(col * cubeSize, 0f, row * cubeSize);
 
                 GameObject cube = Instantiate(cubePrefab, position, Quaternion.identity);
+
+                //  Para no generar objetos negros con escala de 0
                 if (height_map[row, col] == 0)
                 {
                     cube.transform.localScale = new Vector3(cubeSize, 0.1f, cubeSize);
@@ -95,24 +101,28 @@ public class test : MonoBehaviour
                 {
                     cube.transform.localScale = new Vector3(cubeSize, height_map[row, col], cubeSize);  //  Instancia del tamaño del cubo
                 }
+
+
                 cube.transform.parent = transform;
                 cube.name = height_map[row, col].ToString();
 
                 //  Water, mountain or grass?
-                if (height_map[row, col] >= earthTrigger || height_map[row, col] <= -earthTrigger)
+                if ((height_map[row, col] >= earthTrigger || height_map[row, col] <= -earthTrigger) && earthEnabled)
                 {
                     cube.GetComponentInChildren<Renderer>().material = earthMaterial;
                 }
-                else if ((height_map[row, col] >= grassTrigger && height_map[row, col] < earthTrigger) || (height_map[row, col] <= -grassTrigger && height_map[row, col] > -earthTrigger))
+                else if (((height_map[row, col] >= grassTrigger && height_map[row, col] < earthTrigger) || (height_map[row, col] <= -grassTrigger && height_map[row, col] > -earthTrigger)) && grassEnabled)
                 {
                     cube.GetComponentInChildren<Renderer>().material = grassMaterial;
                 }
-                else
+                else if ((height_map[row, col] >= -1 || height_map[row, col] <= 1) && waterEnabled)
                 {
                     cube.GetComponentInChildren<Renderer>().material = waterMaterial;
                 }
-
-
+                else
+                {
+                    cube.GetComponentInChildren<Renderer>().material.color = Color.Lerp(Color.white, Color.black, height_map[row, col] / 10f);
+                }
             }
         }
     }
@@ -204,4 +214,3 @@ public class test : MonoBehaviour
         }
     }
 }
-
