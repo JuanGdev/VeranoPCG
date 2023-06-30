@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static TMPro.SpriteAssetUtilities.TexturePacker_JsonArray;
@@ -25,16 +26,14 @@ public class test : MonoBehaviour
     public float grassTrigger;
     public float earthTrigger;
 
-
-    int currentSceneIndex;
+    public GameObject parent;
 
     void Start()
     {
+
         earthTrigger = 7f;
         grassTrigger = 2f;
         subground = 0f;
-        currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-
         n = UnityEngine.Random.Range(1, 8);
 
 
@@ -64,6 +63,15 @@ public class test : MonoBehaviour
         BuildHeightMap(height_map);
     }
 
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            //  Dentro de la funcion donde se quiere llamar la corutina
+            StartCoroutine(ReloadingTerrain());
+        }
+    }
+
     void BuildHeightMap(float[,] height_map)
     {
 
@@ -89,10 +97,12 @@ public class test : MonoBehaviour
                 cube.name = height_map[row, col].ToString();
 
                 //  Water, mountain or grass?
-                if (height_map[row, col] >= earthTrigger || height_map[row,col] <= -earthTrigger)
+                if (height_map[row, col] >= earthTrigger || height_map[row, col] <= -earthTrigger)
                 {
                     cube.GetComponentInChildren<Renderer>().material = earthMaterial;
-                } else if ((height_map[row, col] >= grassTrigger && height_map[row,col] < earthTrigger) || (height_map[row,col] <= -grassTrigger && height_map[row,col] > -earthTrigger)){
+                }
+                else if ((height_map[row, col] >= grassTrigger && height_map[row, col] < earthTrigger) || (height_map[row, col] <= -grassTrigger && height_map[row, col] > -earthTrigger))
+                {
                     cube.GetComponentInChildren<Renderer>().material = grassMaterial;
                 }
                 else
@@ -104,6 +114,9 @@ public class test : MonoBehaviour
             }
         }
     }
+
+
+   
     void DiamondSquareStep(float[,] heightMap, int chunkSize, float randomRange)
     {
         int half = chunkSize / 2;
@@ -141,13 +154,52 @@ public class test : MonoBehaviour
         }
     }
 
-    private void Update()
+
+    //  Declaracion de la corrutina
+    IEnumerator ReloadingTerrain()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        yield return new WaitForSeconds(2f);
+        DeleteChilds();
+        earthTrigger = 7f;
+        grassTrigger = 2f;
+        subground = 0f;
+        //  Dimensions of 2^n + 1
+        height_map_size = (int)(Mathf.Pow(2, n) + 1);
+
+        height_map = new float[height_map_size, height_map_size];
+
+        mapLenght = height_map.GetLength(0);
+
+        //  Random values at the corners of the square
+        height_map[0, 0] = UnityEngine.Random.Range(1, 10);
+        height_map[0, mapLenght - 1] = UnityEngine.Random.Range(1, 10);
+        height_map[mapLenght - 1, 0] = UnityEngine.Random.Range(1, 10);
+        height_map[mapLenght - 1, mapLenght - 1] = UnityEngine.Random.Range(1, 10);
+
+
+        chunkSize = height_map_size - 1;
+        while (chunkSize > 1)
         {
-            SceneManager.LoadScene(currentSceneIndex);
+            DiamondSquareStep(height_map, chunkSize, randomVal);
+            chunkSize /= 2;
+            randomVal /= 2;
         }
+        BuildHeightMap(height_map);
     }
 
+    void DeleteChilds()
+    {
+        parent = gameObject;
+        int totalChilds = parent.transform.childCount;
+        // Recorre todos los hijos adjuntos y destrúyelos
+        for (int i = 0; i < totalChilds; i++)
+        {
+            // Obtén el hijo actual
+            Transform child = parent.transform.GetChild(i);
+
+            // Destruye el hijo
+            Destroy(child.gameObject);
+        }
+    }
 }
 
