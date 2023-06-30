@@ -355,8 +355,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cubePrefab: {fileID: 6198427059375125941, guid: ef744c2f80ebcda47878eda4ad82bf14, type: 3}
   cubeSize: 1
-  n: 8
-  randomVal: 0
+  n: 3
+  randomVal: 3
   height_map_size: 0
   mapLenght: 0
   chunkSize: 0
@@ -366,3 +366,4 @@ MonoBehaviour:
   subground: 0
   grassTrigger: 0
   earthTrigger: 0
+  parent: {fileID: 0}

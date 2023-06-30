@@ -13,7 +13,7 @@ public class test : MonoBehaviour
     public float cubeSize = 1f; // Tamaño de cada cubo en el plano
     public float[,] height_map;
     public int n;
-    public int randomVal;
+    public int randomVal, randomAux;
     public int height_map_size;
     public int mapLenght;
     public int chunkSize;
@@ -53,12 +53,14 @@ public class test : MonoBehaviour
 
         chunkSize = height_map_size - 1;
         randomVal = 30;
+        randomAux = randomVal;
         while (chunkSize > 1)
         {
             DiamondSquareStep(height_map, chunkSize, randomVal);
             chunkSize /= 2;
             randomVal /= 2;
         }
+        randomVal = randomAux;
 
         BuildHeightMap(height_map);
     }
@@ -116,7 +118,7 @@ public class test : MonoBehaviour
     }
 
 
-   
+
     void DiamondSquareStep(float[,] heightMap, int chunkSize, float randomRange)
     {
         int half = chunkSize / 2;
@@ -160,9 +162,6 @@ public class test : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         DeleteChilds();
-        earthTrigger = 7f;
-        grassTrigger = 2f;
-        subground = 0f;
         //  Dimensions of 2^n + 1
         height_map_size = (int)(Mathf.Pow(2, n) + 1);
 
@@ -178,12 +177,15 @@ public class test : MonoBehaviour
 
 
         chunkSize = height_map_size - 1;
+        randomAux = randomVal;
         while (chunkSize > 1)
         {
             DiamondSquareStep(height_map, chunkSize, randomVal);
             chunkSize /= 2;
             randomVal /= 2;
         }
+
+        randomVal = randomAux;
         BuildHeightMap(height_map);
     }
 
