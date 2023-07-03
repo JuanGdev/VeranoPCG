@@ -67,15 +67,8 @@ public class test : MonoBehaviour
         randomVal = randomAux;
 
         BuildHeightMap(height_map);
-    }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            //  Dentro de la funcion donde se quiere llamar la corutina
-            ReloadingTerrain();
-        }
+        InvokeRepeating("ReloadingTerrain", 5f, 5f);
     }
 
     void BuildHeightMap(float[,] height_map)
@@ -149,7 +142,6 @@ public class test : MonoBehaviour
 
                 heightMap[x, y] = avg + randomAdd;
             }
-            //  Testing merge
         }
 
         //  Square step
@@ -181,10 +173,10 @@ public class test : MonoBehaviour
         mapLenght = height_map.GetLength(0);
 
         //  Random values at the corners of the square
-        height_map[0, 0] = UnityEngine.Random.Range(1, 10);
-        height_map[0, mapLenght - 1] = UnityEngine.Random.Range(1, 10);
-        height_map[mapLenght - 1, 0] = UnityEngine.Random.Range(1, 10);
-        height_map[mapLenght - 1, mapLenght - 1] = UnityEngine.Random.Range(1, 10);
+        height_map[0, 0] = UnityEngine.Random.Range(-randomVal, randomVal);
+        height_map[0, mapLenght - 1] = UnityEngine.Random.Range(-randomVal, randomVal);
+        height_map[mapLenght - 1, 0] = UnityEngine.Random.Range(-randomVal, randomVal);
+        height_map[mapLenght - 1, mapLenght - 1] = UnityEngine.Random.Range(-randomVal, randomVal);
 
 
         chunkSize = height_map_size - 1;
