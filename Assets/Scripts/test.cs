@@ -26,7 +26,7 @@ public class test : MonoBehaviour
     public Material waterMaterial;
     public Material grassMaterial;
 
-    public float subground;
+    public float waterTrigger;
     public float grassTrigger;
     public float earthTrigger;
 
@@ -37,7 +37,7 @@ public class test : MonoBehaviour
 
         earthTrigger = 7f;
         grassTrigger = 2f;
-        subground = 0f;
+        waterTrigger = 1f;
         n = UnityEngine.Random.Range(1, 8);
 
 
@@ -74,7 +74,7 @@ public class test : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             //  Dentro de la funcion donde se quiere llamar la corutina
-            StartCoroutine(ReloadingTerrain());
+            ReloadingTerrain();
         }
     }
 
@@ -106,6 +106,8 @@ public class test : MonoBehaviour
                 cube.transform.parent = transform;
                 cube.name = height_map[row, col].ToString();
 
+                cube.GetComponentInChildren<Renderer>().material.color = Color.Lerp(Color.white, Color.black, height_map[row, col] / 10f);
+
                 //  Water, mountain or grass?
                 if ((height_map[row, col] >= earthTrigger || height_map[row, col] <= -earthTrigger) && earthEnabled)
                 {
@@ -115,7 +117,7 @@ public class test : MonoBehaviour
                 {
                     cube.GetComponentInChildren<Renderer>().material = grassMaterial;
                 }
-                else if ((height_map[row, col] >= -1 || height_map[row, col] <= 1) && waterEnabled)
+                else if (((height_map[row, col] < grassTrigger) && height_map[row, col] >= -grassTrigger) && waterEnabled)
                 {
                     cube.GetComponentInChildren<Renderer>().material = waterMaterial;
                 }
@@ -168,9 +170,8 @@ public class test : MonoBehaviour
 
 
     //  Declaracion de la corrutina
-    IEnumerator ReloadingTerrain()
+    void ReloadingTerrain()
     {
-        yield return new WaitForSeconds(2f);
         DeleteChilds();
         //  Dimensions of 2^n + 1
         height_map_size = (int)(Mathf.Pow(2, n) + 1);
