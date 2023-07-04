@@ -72,7 +72,7 @@ public class test : MonoBehaviour
 
         BuildHeightMap(height_map);
 
-        InvokeRepeating("ReloadingTerrain", 5f, 5f);
+        InvokeRepeating("ReloadingTerrain", 5f, 2f);
     }
 
     void BuildHeightMap(float[,] height_map)
