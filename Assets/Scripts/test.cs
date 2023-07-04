@@ -35,9 +35,6 @@ public class test : MonoBehaviour
     void Start()
     {
 
-        earthTrigger = 7f;
-        grassTrigger = 2f;
-        waterTrigger = 1f;
         n = UnityEngine.Random.Range(1, 8);
 
 
@@ -47,16 +44,19 @@ public class test : MonoBehaviour
         height_map = new float[height_map_size, height_map_size];
 
         mapLenght = height_map.GetLength(0);
+        randomVal = 30;
 
         //  Random values at the corners of the square
-        height_map[0, 0] = UnityEngine.Random.Range(1, 10);
-        height_map[0, mapLenght - 1] = UnityEngine.Random.Range(1, 10);
-        height_map[mapLenght - 1, 0] = UnityEngine.Random.Range(1, 10);
-        height_map[mapLenght - 1, mapLenght - 1] = UnityEngine.Random.Range(1, 10);
+        height_map[0, 0] = UnityEngine.Random.Range(-randomVal, randomVal);
+        height_map[0, mapLenght - 1] = UnityEngine.Random.Range(-randomVal, randomVal);
+        height_map[mapLenght - 1, 0] = UnityEngine.Random.Range(-randomVal, randomVal);
+        height_map[mapLenght - 1, mapLenght - 1] = UnityEngine.Random.Range(-randomVal, randomVal);
 
 
         chunkSize = height_map_size - 1;
-        randomVal = 30;
+        earthTrigger = 0.75f * randomVal;
+        grassTrigger = 0.2f * randomVal;
+        waterTrigger = 0.1f * randomVal;
         randomAux = randomVal;
         while (chunkSize > 1)
         {
@@ -180,6 +180,9 @@ public class test : MonoBehaviour
 
 
         chunkSize = height_map_size - 1;
+        earthTrigger = 0.75f * randomVal;
+        grassTrigger = 0.2f * randomVal;
+        waterTrigger = 0.1f * randomVal;
         randomAux = randomVal;
         while (chunkSize > 1)
         {
