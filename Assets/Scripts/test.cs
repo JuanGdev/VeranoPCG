@@ -26,9 +26,13 @@ public class test : MonoBehaviour
     public Material waterMaterial;
     public Material grassMaterial;
 
-    public float waterTrigger;
-    public float grassTrigger;
-    public float earthTrigger;
+    public float waterTriggerNorm;
+    public float grassTriggerNorm;
+    public float earthTriggerNorm;
+
+    public float waterTriggerRange = 0.1f;
+    public float grassTriggerRange = 0.2f;
+    public float earthTriggerRange = 0.75f;
 
     public GameObject parent;
 
@@ -54,9 +58,9 @@ public class test : MonoBehaviour
 
 
         chunkSize = height_map_size - 1;
-        earthTrigger = 0.75f * randomVal;
-        grassTrigger = 0.2f * randomVal;
-        waterTrigger = 0.1f * randomVal;
+        earthTriggerNorm = earthTriggerRange * randomVal;
+        grassTriggerNorm = grassTriggerRange * randomVal;
+        waterTriggerNorm = waterTriggerRange * randomVal;
         randomAux = randomVal;
         while (chunkSize > 1)
         {
@@ -102,15 +106,15 @@ public class test : MonoBehaviour
                 cube.GetComponentInChildren<Renderer>().material.color = Color.Lerp(Color.white, Color.black, height_map[row, col] / 10f);
 
                 //  Water, mountain or grass?
-                if ((height_map[row, col] >= earthTrigger || height_map[row, col] <= -earthTrigger) && earthEnabled)
+                if ((height_map[row, col] >= earthTriggerNorm || height_map[row, col] <= -earthTriggerNorm) && earthEnabled)
                 {
                     cube.GetComponentInChildren<Renderer>().material = earthMaterial;
                 }
-                else if (((height_map[row, col] >= grassTrigger && height_map[row, col] < earthTrigger) || (height_map[row, col] <= -grassTrigger && height_map[row, col] > -earthTrigger)) && grassEnabled)
+                else if (((height_map[row, col] >= grassTriggerNorm && height_map[row, col] < earthTriggerNorm) || (height_map[row, col] <= -grassTriggerNorm && height_map[row, col] > -earthTriggerNorm)) && grassEnabled)
                 {
                     cube.GetComponentInChildren<Renderer>().material = grassMaterial;
                 }
-                else if (((height_map[row, col] < grassTrigger) && height_map[row, col] >= -grassTrigger) && waterEnabled)
+                else if (((height_map[row, col] < grassTriggerNorm) && height_map[row, col] >= -grassTriggerNorm) && waterEnabled)
                 {
                     cube.GetComponentInChildren<Renderer>().material = waterMaterial;
                 }
@@ -180,9 +184,9 @@ public class test : MonoBehaviour
 
 
         chunkSize = height_map_size - 1;
-        earthTrigger = 0.75f * randomVal;
-        grassTrigger = 0.2f * randomVal;
-        waterTrigger = 0.1f * randomVal;
+        earthTriggerNorm = earthTriggerRange * randomVal;
+        grassTriggerNorm = grassTriggerRange * randomVal;
+        waterTriggerNorm = waterTriggerRange * randomVal;
         randomAux = randomVal;
         while (chunkSize > 1)
         {
