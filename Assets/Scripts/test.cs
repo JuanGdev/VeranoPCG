@@ -12,15 +12,15 @@ public class test : MonoBehaviour
     public float cubeSize = 1f; // Tamaño de cada cubo en el plano
     public float[,] height_map;
     public int n;
-    public int randomVal, randomAux;
+    public int randomRangeValue, randomAux;
     public int height_map_size;
     public int mapLenght;
     public int chunkSize;
 
-    public bool waterEnabled;
-    public bool grassEnabled;
-    public bool earthEnabled;
-
+    public bool waterEnabled = true;
+    public bool grassEnabled = true;
+    public bool earthEnabled = true;
+    public bool automaticRange = true;
 
     public Material earthMaterial;
     public Material waterMaterial;
@@ -39,7 +39,7 @@ public class test : MonoBehaviour
     void Start()
     {
 
-        n = UnityEngine.Random.Range(1, 8);
+        n = UnityEngine.Random.Range(1, 9);
 
 
         //  Dimensions of 2^n + 1
@@ -48,27 +48,32 @@ public class test : MonoBehaviour
         height_map = new float[height_map_size, height_map_size];
 
         mapLenght = height_map.GetLength(0);
-        randomVal = 30;
+
+        if (automaticRange)
+        {
+            SetAutomaticRange();
+        }
+        randomRangeValue = 10;
 
         //  Random values at the corners of the square
-        height_map[0, 0] = UnityEngine.Random.Range(-randomVal, randomVal);
-        height_map[0, mapLenght - 1] = UnityEngine.Random.Range(-randomVal, randomVal);
-        height_map[mapLenght - 1, 0] = UnityEngine.Random.Range(-randomVal, randomVal);
-        height_map[mapLenght - 1, mapLenght - 1] = UnityEngine.Random.Range(-randomVal, randomVal);
+        height_map[0, 0] = UnityEngine.Random.Range(-randomRangeValue, randomRangeValue);
+        height_map[0, mapLenght - 1] = UnityEngine.Random.Range(-randomRangeValue, randomRangeValue);
+        height_map[mapLenght - 1, 0] = UnityEngine.Random.Range(-randomRangeValue, randomRangeValue);
+        height_map[mapLenght - 1, mapLenght - 1] = UnityEngine.Random.Range(-randomRangeValue, randomRangeValue);
 
 
         chunkSize = height_map_size - 1;
-        earthTriggerNorm = earthTriggerRange * randomVal;
-        grassTriggerNorm = grassTriggerRange * randomVal;
-        waterTriggerNorm = waterTriggerRange * randomVal;
-        randomAux = randomVal;
+        earthTriggerNorm = earthTriggerRange * randomRangeValue;
+        grassTriggerNorm = grassTriggerRange * randomRangeValue;
+        waterTriggerNorm = waterTriggerRange * randomRangeValue;
+        randomAux = randomRangeValue;
         while (chunkSize > 1)
         {
-            DiamondSquareStep(height_map, chunkSize, randomVal);
+            DiamondSquareStep(height_map, chunkSize, randomRangeValue);
             chunkSize /= 2;
-            randomVal /= 2;
+            randomRangeValue /= 2;
         }
-        randomVal = randomAux;
+        randomRangeValue = randomAux;
 
         BuildHeightMap(height_map);
 
@@ -172,30 +177,36 @@ public class test : MonoBehaviour
         //  Dimensions of 2^n + 1
         height_map_size = (int)(Mathf.Pow(2, n) + 1);
 
+        if (automaticRange)
+        {
+            SetAutomaticRange();
+        }
+        //  Free use for randomRangeValue
+
         height_map = new float[height_map_size, height_map_size];
 
         mapLenght = height_map.GetLength(0);
 
         //  Random values at the corners of the square
-        height_map[0, 0] = UnityEngine.Random.Range(-randomVal, randomVal);
-        height_map[0, mapLenght - 1] = UnityEngine.Random.Range(-randomVal, randomVal);
-        height_map[mapLenght - 1, 0] = UnityEngine.Random.Range(-randomVal, randomVal);
-        height_map[mapLenght - 1, mapLenght - 1] = UnityEngine.Random.Range(-randomVal, randomVal);
+        height_map[0, 0] = UnityEngine.Random.Range(-randomRangeValue, randomRangeValue);
+        height_map[0, mapLenght - 1] = UnityEngine.Random.Range(-randomRangeValue, randomRangeValue);
+        height_map[mapLenght - 1, 0] = UnityEngine.Random.Range(-randomRangeValue, randomRangeValue);
+        height_map[mapLenght - 1, mapLenght - 1] = UnityEngine.Random.Range(-randomRangeValue, randomRangeValue);
 
 
         chunkSize = height_map_size - 1;
-        earthTriggerNorm = earthTriggerRange * randomVal;
-        grassTriggerNorm = grassTriggerRange * randomVal;
-        waterTriggerNorm = waterTriggerRange * randomVal;
-        randomAux = randomVal;
+        earthTriggerNorm = earthTriggerRange * randomRangeValue;
+        grassTriggerNorm = grassTriggerRange * randomRangeValue;
+        waterTriggerNorm = waterTriggerRange * randomRangeValue;
+        randomAux = randomRangeValue;
         while (chunkSize > 1)
         {
-            DiamondSquareStep(height_map, chunkSize, randomVal);
+            DiamondSquareStep(height_map, chunkSize, randomRangeValue);
             chunkSize /= 2;
-            randomVal /= 2;
+            randomRangeValue /= 2;
         }
 
-        randomVal = randomAux;
+        randomRangeValue = randomAux;
         BuildHeightMap(height_map);
     }
 
@@ -211,6 +222,41 @@ public class test : MonoBehaviour
 
             // Destruye el hijo
             Destroy(child.gameObject);
+        }
+    }
+
+    void SetAutomaticRange()
+    {
+        //  continuous piecewise function
+        switch (n)
+        {
+            case 1:
+                randomRangeValue = 2;
+                break;
+            case 2:
+                randomRangeValue = 4;
+                break;
+            case 3:
+                randomRangeValue = 10;
+                break;
+            case 4:
+                randomRangeValue = 20;
+                break;
+            case 5:
+                randomRangeValue = 25;
+                break;
+            case 6:
+                randomRangeValue = 30;
+                break;
+            case 7:
+                randomRangeValue = 35;
+                break;
+            case 8:
+                randomRangeValue = 40;
+                break;
+            default:
+                randomRangeValue = n / 2;
+                break;
         }
     }
 }
