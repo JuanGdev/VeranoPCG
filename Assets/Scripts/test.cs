@@ -240,10 +240,10 @@ public class test : MonoBehaviour
                 randomRangeValue = 10;
                 break;
             case 4:
-                randomRangeValue = 20;
+                randomRangeValue = 15;
                 break;
             case 5:
-                randomRangeValue = 25;
+                randomRangeValue = 20;
                 break;
             case 6:
                 randomRangeValue = 30;
