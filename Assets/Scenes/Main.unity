@@ -369,24 +369,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cubePrefab: {fileID: 6198427059375125941, guid: ef744c2f80ebcda47878eda4ad82bf14, type: 3}
-  cubeSize: 1
-  n: 3
-  randomRangeValue: 0
-  randomAux: 0
-  height_map_size: 0
-  mapLenght: 0
-  chunkSize: 0
-  waterEnabled: 1
-  grassEnabled: 1
-  earthEnabled: 1
-  automaticRange: 1
-  earthMaterial: {fileID: 2100000, guid: 46de34f5ed394984c98fa3ed41a22522, type: 2}
-  waterMaterial: {fileID: 2100000, guid: 9a7b37f4f189b194dab6bb6127052423, type: 2}
-  grassMaterial: {fileID: 2100000, guid: f4f5ef64c9931b24aaca6d2f39074851, type: 2}
-  waterTriggerNorm: 0
-  grassTriggerNorm: 0
-  earthTriggerNorm: 0
-  waterTriggerRange: 0.1
-  grassTriggerRange: 0.2
-  earthTriggerRange: 0.75
-  parent: {fileID: 0}
