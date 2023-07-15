@@ -1,14 +1,10 @@
-using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-
-public class TerrainGenerator : MonoBehaviour
+public class MyTerrain
 {
 
-    [System.Serializable]
-    public class MyTerrainData : MonoBehaviour
-    {
         public int m_n;
         public int m_heightMapSize;
         public bool m_automaticRange;
@@ -28,13 +24,12 @@ public class TerrainGenerator : MonoBehaviour
         public float[,] m_heightMap;
 
         private int m_half;
-        private float randomAux;
 
 
         //  methods
-        public MyTerrainData()
+        public MyTerrain()
         {
-            m_n = UnityEngine.Random.Range(1, 9);
+            m_n = Random.Range(1, 9);
             m_earthTriggerRange = 0.75f;
             m_grassTriggerRange = 0.5f;
             m_waterTriggerRange = 0.2f;
@@ -47,9 +42,6 @@ public class TerrainGenerator : MonoBehaviour
             m_waterEnabled = false;
             m_earthEnabled = false;
             m_grassEnabled = false;
-            m_earthMaterial = Resources.Load<Material>("groundMaterial");
-            m_grassMaterial = Resources.Load<Material>("grassMaterial");
-            m_waterMaterial = Resources.Load<Material>("waterMaterial");
 
 
             if (m_automaticRange)
@@ -122,7 +114,7 @@ public class TerrainGenerator : MonoBehaviour
                 {
                     Vector3 position = new Vector3(col * 1, 0f, row * 1);
 
-                    GameObject cube = Instantiate(cubePrefab, position, Quaternion.identity);
+                    GameObject cube = Object.Instantiate(cubePrefab, position, Quaternion.identity);
                     FixCubeSize(heightMap, row, col, cube);
 
                     //                    cube.transform.parent = transform;
@@ -131,8 +123,6 @@ public class TerrainGenerator : MonoBehaviour
 
                     //  Water, mountain or grass?
                     SetMaterial(heightMap, row, col, cube);
-
-
                 }
             }
         }
@@ -201,110 +191,30 @@ public class TerrainGenerator : MonoBehaviour
             }
         }
 
-        void ReloadTerrain()
-        {
-            DestroyCubes();
-        }
-
-        public void DestroyCubes()
+        public void DeleteCubes()
         {
             // Buscar todos los objetos con el tag especificado
-            GameObject[] objectsToDelete = GameObject.FindGameObjectsWithTag("TerrainCube");
+            GameObject[] objectsToDelete = GameObject.FindGameObjectsWithTag("CubeTerrain");
+
             // Eliminar cada objeto encontrado
             foreach (GameObject obj in objectsToDelete)
             {
-                Destroy(obj);
+            Object.Destroy(obj);
             }
         }
-    }
-
-
-    //public GameObject parent;
-    public GameObject cubePrefab;
-    public MyTerrainData test;
-    void Start()
-    {
-        test = new();
-
-        Debug.Log(test.m_n);
-        Debug.Log(test.m_heightMapSize);
-
-
-        while (test.m_chunkSize > 1)
+        public void LoadTerrain(MyTerrain terrainData, GameObject cubePrefab)
         {
-            test.DiamondSquareStep();
-            test.m_chunkSize /= 2;
-            test.m_randomRange /= 2;
-        }
-        test.m_randomRange = test.m_auxRandomRange;
+            DeleteCubes();
+            terrainData = new MyTerrain();
+            while (terrainData.m_chunkSize > 1)
+            {
+                terrainData.DiamondSquareStep();
+                terrainData.m_chunkSize /= 2;
+                terrainData.m_randomRange /= 2;
+            }
+            terrainData.m_randomRange = terrainData.m_auxRandomRange;
 
-        test.BuildHeightmap(test.m_heightMap, cubePrefab);
-    }
-
-    private void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            test.DestroyCubes();
+            terrainData.BuildHeightmap(terrainData.m_heightMap, cubePrefab);
         }
     }
-}
 
-
-//  Declaracion de la corrutina
-/*  void ReloadingTerrain()
-  {
-      DeleteChilds();
-
-
-      InstantiateTerrain();
-
-      if (automaticRange)
-      {
-          SetAutomaticRange();
-      }
-      //  Free use for randomRangeValue
-
-      height_map = new float[height_map_size, height_map_size];
-
-      mapLenght = height_map.GetLength(0);
-
-      //  Random values at the corners of the square
-      height_map[0, 0] = UnityEngine.Random.Range(-randomRangeValue, randomRangeValue);
-      height_map[0, mapLenght - 1] = UnityEngine.Random.Range(-randomRangeValue, randomRangeValue);
-      height_map[mapLenght - 1, 0] = UnityEngine.Random.Range(-randomRangeValue, randomRangeValue);
-      height_map[mapLenght - 1, mapLenght - 1] = UnityEngine.Random.Range(-randomRangeValue, randomRangeValue);
-
-
-      chunkSize = height_map_size - 1;
-      earthTriggerNorm = earthTriggerRange * randomRangeValue;
-      grassTriggerNorm = grassTriggerRange * randomRangeValue;
-      waterTriggerNorm = waterTriggerRange * randomRangeValue;
-      randomAux = randomRangeValue;
-      while (chunkSize > 1)
-      {
-          DiamondSquareStep(height_map, chunkSize, randomRangeValue);
-          chunkSize /= 2;
-          randomRangeValue /= 2;
-      }
-
-      randomRangeValue = randomAux;
-      BuildHeightMap(height_map);
-  }
-
-  void DeleteChilds()
-  {
-      parent = gameObject;
-      int totalChilds = parent.transform.childCount;
-      // Recorre todos los hijos adjuntos y destrúyelos
-      for (int i = 0; i < totalChilds; i++)
-      {
-          // Obtén el hijo actual
-          Transform child = parent.transform.GetChild(i);
-
-          // Destruye el hijo
-          Destroy(child.gameObject);
-      }
-  }
-}
-*/
