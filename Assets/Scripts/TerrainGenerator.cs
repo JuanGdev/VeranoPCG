@@ -14,6 +14,11 @@ public class TerrainGenerator : MonoBehaviour
     public float m_earthTriggerRange;
     public float m_grassTriggerRange;
     public float m_waterTriggerRange;
+
+    public float m_waterTriggerNorm;
+    public float m_grassTriggerNorm;
+    public float m_earthTriggerNorm;
+
     public Material m_earthMaterial;
     public Material m_waterMaterial;
     public Material m_grassMaterial;
@@ -85,12 +90,6 @@ public class TerrainGenerator : MonoBehaviour
         heightMap[heightMapSize - 1, heightMapSize - 1] = UnityEngine.Random.Range(-randomRange, randomRange);
     }
 
-    void SetMaterialsTriggerRange(float earthTriggerRange, float grassTriggerRange, float waterTriggerRange, float randomRange)
-    {
-        m_earthTriggerRange = earthTriggerRange * randomRange;
-        m_grassTriggerRange = grassTriggerRange * randomRange;
-        m_waterTriggerRange = waterTriggerRange * randomRange;
-    }
 
     public void BuildHeightmap(float[,] heightMap, GameObject cubePrefab)
     {
@@ -141,7 +140,7 @@ public class TerrainGenerator : MonoBehaviour
                 float avg = (m_heightMap[(x - m_half + m_heightMapSize) % m_heightMapSize, y] +
                                     m_heightMap[(x + m_half) % m_heightMapSize, y] +
                                     m_heightMap[x, (y + m_half) % m_heightMapSize] +
-                                    m_heightMap[x, (y - m_half + m_half) % m_heightMapSize]) / 4f;
+                                    m_heightMap[x, (y - m_half + m_heightMapSize) % m_heightMapSize]) / 4f;
                 float randomAdd = UnityEngine.Random.Range(-m_randomRange, m_randomRange);
 
                 m_heightMap[x, y] = avg + randomAdd;
@@ -152,15 +151,15 @@ public class TerrainGenerator : MonoBehaviour
     private void SetMaterial(float[,] height_map, int row, int col, GameObject cube)
     {
         //  Water, mountain or grass?
-        if ((height_map[row, col] >= m_earthTriggerRange || height_map[row, col] <= -m_earthTriggerRange) && m_earthEnabled)
+        if ((height_map[row, col] >= m_earthTriggerNorm || height_map[row, col] <= -m_earthTriggerNorm) && m_earthEnabled)
         {
             cube.GetComponentInChildren<Renderer>().material = m_earthMaterial;
         }
-        else if (((height_map[row, col] >= m_grassTriggerRange && height_map[row, col] < m_earthTriggerRange) || (height_map[row, col] <= -m_grassTriggerRange && height_map[row, col] > -m_earthTriggerRange)) && m_grassEnabled)
+        else if (((height_map[row, col] >= m_grassTriggerNorm && height_map[row, col] < m_earthTriggerNorm) || (height_map[row, col] <= -m_grassTriggerRange && height_map[row, col] > -m_earthTriggerNorm)) && m_grassEnabled)
         {
             cube.GetComponentInChildren<Renderer>().material = m_grassMaterial;
         }
-        else if (((height_map[row, col] < m_grassTriggerRange) && height_map[row, col] >= -m_grassTriggerRange) && m_waterEnabled)
+        else if (((height_map[row, col] < m_grassTriggerNorm) && height_map[row, col] >= -m_grassTriggerNorm) && m_waterEnabled)
         {
             cube.GetComponentInChildren<Renderer>().material = m_waterMaterial;
         }
@@ -196,7 +195,13 @@ public class TerrainGenerator : MonoBehaviour
             m_randomRange = SetAutomaticRange(m_n, m_randomRange);
         }
 
+        m_earthTriggerNorm = m_earthTriggerRange * m_randomRange;
+        m_grassTriggerNorm = m_grassTriggerRange * m_randomRange;
+        m_waterTriggerNorm = m_waterTriggerRange * m_randomRange;
+
+
         SetRandomCorners(m_heightMap, m_randomRange, m_heightMapSize);
+        m_auxRandomRange = m_randomRange;
         while (m_chunkSize > 1)
         {
             DiamondSquareStep();
@@ -226,8 +231,8 @@ public class TerrainGenerator : MonoBehaviour
     {
         m_n = UnityEngine.Random.Range(1, 9);
         m_earthTriggerRange = 0.75f;
-        m_grassTriggerRange = 0.5f;
-        m_waterTriggerRange = 0.2f;
+        m_grassTriggerRange = 0.2f;
+        m_waterTriggerRange = 0.1f;
         //  Dimensions of 2^n + 1
         m_heightMapSize = (int)(Mathf.Pow(2, m_n) + 1);
         m_heightMap = new float[m_heightMapSize, m_heightMapSize];
@@ -243,12 +248,16 @@ public class TerrainGenerator : MonoBehaviour
             m_randomRange = SetAutomaticRange(m_n, m_randomRange);
         }
 
+        m_earthTriggerNorm = m_earthTriggerRange * m_randomRange;
+        m_grassTriggerNorm = m_grassTriggerRange * m_randomRange;
+        m_waterTriggerNorm = m_waterTriggerRange * m_randomRange;
+
         SetRandomCorners(m_heightMap, m_randomRange, m_heightMapSize);
-        SetMaterialsTriggerRange(m_earthTriggerRange, m_grassTriggerRange, m_waterTriggerRange, m_randomRange);
     }
 
     void Start()
     {
+        m_auxRandomRange = m_randomRange;
         while (m_chunkSize > 1)
         {
             DiamondSquareStep();
