@@ -181,9 +181,31 @@ public class TerrainGenerator : MonoBehaviour
         }
     }
 
-    void ReloadTerrain()
+    public void ReloadTerrain()
     {
         DestroyCubes();
+        ClearMatrix();
+        //  Dimensions of 2^n + 1
+        m_heightMapSize = (int)(Mathf.Pow(2, m_n) + 1);
+        m_heightMap = new float[m_heightMapSize, m_heightMapSize];
+
+        m_chunkSize = m_heightMapSize - 1;
+
+        if (m_automaticRange)
+        {
+            m_randomRange = SetAutomaticRange(m_n, m_randomRange);
+        }
+
+        SetRandomCorners(m_heightMap, m_randomRange, m_heightMapSize);
+        while (m_chunkSize > 1)
+        {
+            DiamondSquareStep();
+            m_chunkSize /= 2;
+            m_randomRange /= 2;
+        }
+        m_randomRange = m_auxRandomRange;
+
+        BuildHeightmap(m_heightMap, cubePrefab);
     }
 
     public void DestroyCubes()
@@ -198,7 +220,7 @@ public class TerrainGenerator : MonoBehaviour
     }
 
 
-    
+
 
     private void Awake()
     {
@@ -240,10 +262,7 @@ public class TerrainGenerator : MonoBehaviour
 
     private void Update()
     {
-        //  Para regenerar el terreno, solo debo volver a ejecutar el diamond square step y construir de nuevo el terreno
-        //  Limpiar la matriz para dejarla con valores de 0
-        //  GameManager para controlar los eventos de los botones
-        //  Crear otro terreno
+        //  Revisar el algoritmo de Diamante, randomRange y auxRandomRange
         //  Spawnear un terreno al lado del primero para comparar
     }
 }
