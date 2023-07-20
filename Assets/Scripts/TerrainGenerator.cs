@@ -1,10 +1,13 @@
 using System;
 using System.Collections;
+using TMPro;
 using UnityEngine;
 
 
 public class TerrainGenerator : MonoBehaviour
 {
+    private CameraMovement cameraScript;
+
     public int m_n;
     public int m_heightMapSize;
     public bool m_automaticRange;
@@ -99,7 +102,7 @@ public class TerrainGenerator : MonoBehaviour
         {
             for (int col = 0; col < heightmap_columns; col++)
             {
-                Vector3 position = new Vector3(col * 1, 0f, row * 1);
+                Vector3 position = new Vector3(col * 1, 10f, row * 1);
 
                 GameObject cube = Instantiate(cubePrefab, position, Quaternion.identity);
                 FixCubeSize(heightMap, row, col, cube);
@@ -182,6 +185,9 @@ public class TerrainGenerator : MonoBehaviour
 
     public void ReloadTerrain()
     {
+        
+
+
         DestroyCubes();
         ClearMatrix();
         //  Dimensions of 2^n + 1
@@ -210,6 +216,10 @@ public class TerrainGenerator : MonoBehaviour
         }
         m_randomRange = m_auxRandomRange;
 
+        //  Camera variables
+        cameraScript.halfPoint = m_heightMapSize / 2;
+        cameraScript.targetPosition = new Vector3(cameraScript.halfPoint, 10f, cameraScript.halfPoint);
+
         BuildHeightmap(m_heightMap, cubePrefab);
     }
 
@@ -229,6 +239,7 @@ public class TerrainGenerator : MonoBehaviour
 
     private void Awake()
     {
+        cameraScript = GameObject.Find("Main Camera").GetComponent<CameraMovement>();
         m_n = UnityEngine.Random.Range(1, 9);
         m_earthTriggerRange = 0.75f;
         m_grassTriggerRange = 0.2f;
