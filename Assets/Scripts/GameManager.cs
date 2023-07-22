@@ -9,7 +9,7 @@ using static System.Net.Mime.MediaTypeNames;
 public class GameManager : MonoBehaviour
 {
     private TerrainGenerator terrainGeneratorScript;
-
+    private bool canvasActive = false;
     public UnityEngine.UI.Slider randomRangeSlider;
     public UnityEngine.UI.Slider mapSizeSlider;
 
@@ -23,10 +23,12 @@ public class GameManager : MonoBehaviour
     public UnityEngine.UI.Toggle waterEnabledToggle;
     public UnityEngine.UI.Toggle grassEnabledToggle;
 
-
+    public GameObject panelUI;
     // Start is called before the first frame update
     void Start()
     {
+        //  Setting UI to zero for hide
+        panelUI.transform.localScale = Vector2.zero;
         terrainGeneratorScript = GameObject.Find("Terrain Data").GetComponent<TerrainGenerator>();
 
         //  sliders
@@ -44,8 +46,24 @@ public class GameManager : MonoBehaviour
         earthEnabledToggle.onValueChanged.AddListener(OnToggleEarthEnabledValueChange);
         grassEnabledToggle.onValueChanged.AddListener(OnToggleGrassEnabledValueChange);
         waterEnabledToggle.onValueChanged.AddListener(OnToggleWaterEnabledValueChange);
+    }
 
+    private void Update()
+    {
+        //  Animations UI
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            canvasActive = !canvasActive;
+            if (canvasActive)
+            {
+                panelUI.LeanScale(new Vector2(0.3f,0.3f), 0.8f);
 
+            }
+            else
+            {
+                panelUI.LeanScale(Vector2.zero, 1f).setEaseInBack();
+            }
+        }
 
     }
 
