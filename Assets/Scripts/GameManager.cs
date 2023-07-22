@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
 {
     private TerrainGenerator terrainGeneratorScript;
     private bool canvasActive = false;
+
+    private AudioSource mainMenuSound;
+
     public UnityEngine.UI.Slider randomRangeSlider;
     public UnityEngine.UI.Slider mapSizeSlider;
 
@@ -27,6 +30,9 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //  Audio
+        mainMenuSound = GetComponent<AudioSource>();
+
         //  Setting UI to zero for hide
         panelUI.transform.localScale = Vector2.zero;
         terrainGeneratorScript = GameObject.Find("Terrain Data").GetComponent<TerrainGenerator>();
@@ -53,10 +59,11 @@ public class GameManager : MonoBehaviour
         //  Animations UI
         if (Input.GetKeyDown(KeyCode.M))
         {
+            mainMenuSound.Play();
             canvasActive = !canvasActive;
             if (canvasActive)
             {
-                panelUI.LeanScale(new Vector2(0.3f,0.3f), 0.8f);
+                panelUI.LeanScale(new Vector2(0.3f,0.3f), 0.5f);
 
             }
             else
