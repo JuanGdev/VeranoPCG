@@ -185,9 +185,6 @@ public class TerrainGenerator : MonoBehaviour
 
     public void ReloadTerrain()
     {
-        
-
-
         DestroyCubes();
         ClearMatrix();
         //  Dimensions of 2^n + 1
@@ -217,9 +214,12 @@ public class TerrainGenerator : MonoBehaviour
         m_randomRange = m_auxRandomRange;
 
         //  Camera variables
+        cameraScript.initialPosition.x = 10 + m_heightMapSize/2 * 2;
+        cameraScript.initialPosition.y = 10 + (FindMaxValue(m_heightMap) * 2);
+        cameraScript.initialPosition.z = 10 + m_heightMapSize/2 * 2;
+        cameraScript.transform.position = cameraScript.initialPosition;
         cameraScript.halfPoint = m_heightMapSize / 2;
         cameraScript.targetPosition = new Vector3(cameraScript.halfPoint, 10f, cameraScript.halfPoint);
-
         BuildHeightmap(m_heightMap, cubePrefab);
     }
 
@@ -234,6 +234,25 @@ public class TerrainGenerator : MonoBehaviour
         }
     }
 
+    public float FindMaxValue(float[,] matrix)
+    {
+        int rows = matrix.GetLength(0);
+        int columns = matrix.GetLength(1);
+        float maxValue = matrix[0, 0];
+
+        for (int row = 0; row < rows; row++)
+        {
+            for (int column = 0; column < columns; column++)
+            {
+                if (matrix[row, column] > maxValue)
+                {
+                    maxValue = matrix[row, column];
+                }
+            }
+        }
+
+        return maxValue;
+    }
 
 
 
