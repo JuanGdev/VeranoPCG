@@ -1,11 +1,11 @@
 # Generación Procedural de Contenido 💻⚡
 
 ## Contenido:
-- Introducción
-- Algoritmo "Diamante Cuadrado"
-- Demostración y proyecto en conjunto
-- Próximas mejoras
-- Recursos adicionales
+- [Introducción](#introducción-)
+- [Algoritmo "Diamante Cuadrado"](#algoritmo-diamante-cuadrado)
+- [Demostración y proyecto en conjunto](#demostración-y-proyecto-en-conjunto)
+- [Próximas mejoras](#próximas-mejoras-)
+- [Recursos adicionales](#recursos-adicionales)
 
 > Este algoritmo y el proyecto en general no hubiera sido posible sin la guía y apoyo constante de nuestros asesores, la Dra. Rocío Lizárraga y el Dr. Uriel Haile,
 > además de todo el increíble equipo de trabajo; Martín, Luis, Bertani, Michel, Alejandro 💛
@@ -35,7 +35,7 @@ en este repositorio se encuentra una **implementación del algoritmo "Diamond Sq
 en estas áreas, utilizado para la generación de mapas
 de altura en 2 dimensiones.
 
-### Algoritmo Diamante Cuadrado
+### Algoritmo "Diamante Cuadrado"
 Partimos de una **matriz de dos dimensiones con una longitud de n x n** (*la superficie debe ser cuadrada para garantizar 
 mejores resultados*). Exceptuando los valores de las 4 esquinas que delimitan el terreno y se generan de manera aleatoria,
 el resto de los valores de la matriz se calculan a partir del algoritmo, en los siguientes dos pasos:
@@ -45,7 +45,7 @@ el resto de los valores de la matriz se calculan a partir del algoritmo, en los 
 El paso del diamante: Para cada cuadrado de la matriz, establece que el punto medio de ese cuadrado sea la media de los 
 cuatro puntos de las esquinas más un valor aleatorio.
 
-Paso del cuadrado
+**2. Paso del cuadrado**
 
 Para cada diamante de la matriz, establece que el punto medio de ese diamante sea la media de los cuatro puntos de las 
 esquinas más un valor aleatorio.
@@ -59,7 +59,7 @@ solucionamos sacando la media de los valores que se encuentran adyacentes.
 
 ![Procedure](https://janert.me/blog/2022/the-diamond-square-algorithm-for-terrain-generation/grid.png)
 
-
+> Sí, parece mucho más complejo cuando ves los cubitos apilados y de colores 😉
 ### Demostración y proyecto en conjunto
 
 Te invito a que revises el video completo que habla más a fondo de todos los proyectos desarrollados en este verano de
