@@ -2,11 +2,12 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 
 public class TerrainGenerator : MonoBehaviour
 {
-    private CameraMovement cameraScript;
+    //private CameraMovement cameraScript;
 
     public int m_n;
     public int m_heightMapSize;
@@ -21,6 +22,9 @@ public class TerrainGenerator : MonoBehaviour
     public float m_waterTriggerNorm;
     public float m_grassTriggerNorm;
     public float m_earthTriggerNorm;
+
+    public float delayBetweenBlocks = 0f; // Tiempo de retraso entre la creación de bloques
+
 
     public Material m_earthMaterial;
     public Material m_waterMaterial;
@@ -77,6 +81,9 @@ public class TerrainGenerator : MonoBehaviour
             case 8:
                 randomRange = 40;
                 break;
+            case 9:
+                randomRange = 50;
+                break;
             default:
                 randomRange = n / 2;
                 break;
@@ -96,25 +103,27 @@ public class TerrainGenerator : MonoBehaviour
 
     public void BuildHeightmap(float[,] heightMap, GameObject cubePrefab)
     {
+        //  Variables para columnas y filas
         int heightmap_rows = heightMap.GetLength(0);
         int heightmap_columns = heightMap.GetLength(1);
-        for (int row = 0; row < heightmap_rows; row++)
+        
+        StartCoroutine(BuildHeightmapCoroutine(heightMap, heightmap_rows, heightmap_columns));
+    }
+
+    private IEnumerator BuildHeightmapCoroutine(float[,] heightMap, int rows, int columns)
+    {
+        for (int row = 0; row < rows; row++)
         {
-            for (int col = 0; col < heightmap_columns; col++)
+            for (int col = 0; col < columns; col++)
             {
                 Vector3 position = new Vector3(col * 1, 10f, row * 1);
-
                 GameObject cube = Instantiate(cubePrefab, position, Quaternion.identity);
+
                 FixCubeSize(heightMap, row, col, cube);
-
-                //                    cube.transform.parent = transform;
                 cube.name = heightMap[row, col].ToString();
-                //cube.GetComponentInChildren<Renderer>().material.color = Color.Lerp(Color.white, Color.black, heightMap[row, col]); ;
-
-                //  Water, mountain or grass?
                 SetMaterial(heightMap, row, col, cube);
 
-
+                yield return new WaitForSeconds(delayBetweenBlocks); // Agregamos el retraso entre bloques
             }
         }
     }
@@ -179,7 +188,7 @@ public class TerrainGenerator : MonoBehaviour
         }
         else
         {
-            cube.transform.localScale = new Vector3(1, heightmap[row, col], 1);  //  Instancia del tama�o del cubo
+            cube.transform.localScale = new Vector3(1, heightmap[row, col], 1);  //  Instancia del tamaño del cubo
         }
     }
 
@@ -214,12 +223,12 @@ public class TerrainGenerator : MonoBehaviour
         m_randomRange = m_auxRandomRange;
 
         //  Camera variables
-        cameraScript.initialPosition.x = 10 + m_heightMapSize/2 * 2;
-        cameraScript.initialPosition.y = 10 + (FindMaxValue(m_heightMap) * 2);
-        cameraScript.initialPosition.z = 10 + m_heightMapSize/2 * 2;
-        cameraScript.transform.position = cameraScript.initialPosition;
-        cameraScript.halfPoint = m_heightMapSize / 2;
-        cameraScript.targetPosition = new Vector3(cameraScript.halfPoint, 10f, cameraScript.halfPoint);
+        //cameraScript.initialPosition.x = 10 + m_heightMapSize / 2 * 2;
+        //cameraScript.initialPosition.y = 10 + (FindMaxValue(m_heightMap) * 2);
+       // cameraScript.initialPosition.z = 10 + m_heightMapSize / 2 * 2;
+       // cameraScript.transform.position = cameraScript.initialPosition;
+       // cameraScript.halfPoint = m_heightMapSize / 2;
+       // cameraScript.targetPosition = new Vector3(cameraScript.halfPoint, 10f, cameraScript.halfPoint);
         BuildHeightmap(m_heightMap, cubePrefab);
     }
 
@@ -258,15 +267,14 @@ public class TerrainGenerator : MonoBehaviour
 
     private void Awake()
     {
-        cameraScript = GameObject.Find("Main Camera").GetComponent<CameraMovement>();
-        m_n = UnityEngine.Random.Range(1, 9);
+       // cameraScript = GameObject.Find("Main Camera").GetComponent<CameraMovement>();
+        m_n = 8;
         m_earthTriggerRange = 0.75f;
         m_grassTriggerRange = 0.2f;
         m_waterTriggerRange = 0.1f;
         //  Dimensions of 2^n + 1
         m_heightMapSize = (int)(Mathf.Pow(2, m_n) + 1);
         m_heightMap = new float[m_heightMapSize, m_heightMapSize];
-
         m_chunkSize = m_heightMapSize - 1;
         m_automaticRange = true;
         m_waterEnabled = true;
@@ -297,12 +305,6 @@ public class TerrainGenerator : MonoBehaviour
         m_randomRange = m_auxRandomRange;
 
         BuildHeightmap(m_heightMap, cubePrefab);
-    }
-
-    private void Update()
-    {
-        //  Revisar el algoritmo de Diamante, randomRange y auxRandomRange
-        //  Spawnear un terreno al lado del primero para comparar
     }
 }
 

@@ -129,4 +129,10 @@ public class GameManager : MonoBehaviour
     {
         terrainGeneratorScript.ReloadTerrain();
     }
+
+    public void ReloadMaterials()
+    {
+        terrainGeneratorScript.DestroyCubes();
+        terrainGeneratorScript.BuildHeightmap(terrainGeneratorScript.m_heightMap, terrainGeneratorScript.cubePrefab);
+    }
 }
