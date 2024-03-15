@@ -8,7 +8,7 @@
 - [Recursos adicionales](#recursos-adicionales)
 
 > Este algoritmo y el proyecto en general no hubiera sido posible sin la guía y apoyo constante de nuestros asesores, la Dra. Rocío Lizárraga y el Dr. Uriel Haile,
-> además de todo el increíble equipo de trabajo; Martín, Luis, Bertani, Michel, Alejandro 💛
+> además de todo el increíble equipo de trabajo; Martín, Luis, Bertani, Michel y Alejandro 💛
 
 ### Introducción 📖
 A pesar de que no exista una definición formal, la **generación procedural de contenido** *se entiende como una forma de 
