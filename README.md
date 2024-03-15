@@ -35,11 +35,9 @@ en este repositorio se encuentra una **implementación del algoritmo "Diamond Sq
 en estas áreas, utilizado para la generación de mapas
 de altura en 2 dimensiones.
 
-![Team](./repoAssets/IMG-20230803-WA0051.jpg)
-
 ### Algoritmo Diamante Cuadrado
 Partimos de una **matriz de dos dimensiones con una longitud de n x n** (*la superficie debe ser cuadrada para garantizar 
-mejores resultado*s). Exceptuando los valores de las 4 esquinas que delimitan el terreno y se generan de manera aleatoria,
+mejores resultados*). Exceptuando los valores de las 4 esquinas que delimitan el terreno y se generan de manera aleatoria,
 el resto de los valores de la matriz se calculan a partir del algoritmo, en los siguientes dos pasos:
 
 **1. Paso del diamante :diamonds:**
@@ -72,3 +70,13 @@ investigación :raised_hands:
 
 
 [![Official Video](./repoAssets/demoDiamondSquare.gif)](https://www.youtube.com/watch?v=z2KINXBTWxc "Demo")
+
+### Próximas mejoras ✅
+- [ ] Generar una implementación en Unreal Engine y con un componente de mapas de altura
+- [ ] Optimizar la generación de elementos para mejorar el rendimiento del programa
+- [ ] Parametrizar y experimentar con más variaciones entre los valores pseudo-aleatorios
+- [ ] Nuevos algoritmos de generación procedural
+
+### Recursos adicionales
+- [White Box Dev](https://youtu.be/4GuAV1PnurU)
+- [The Game of life in 3D](https://www.youtube.com/watch?v=6O9CLARsJ04)
