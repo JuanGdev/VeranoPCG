@@ -246,14 +246,6 @@ Este proyecto fue desarrollado durante el **Verano de la Ciencia UG - Edición X
 - 👩‍🏫 Dra. Rocío Lizárraga
 - 👨‍🏫 Dr. Uriel Haile
 
-**Equipo de desarrollo:**
-- 💻 Juan Aguilera (Repositorio y desarrollo principal)
-- 🎨 Martín
-- 🔧 Luis
-- 📊 Bertani
-- 🎮 Michel
-- ⚡ Alejandro
-
 #### Agradecimientos
 
 Un agradecimiento especial a todos los participantes del Verano de la Ciencia de la Universidad de Guanajuato por su colaboración y apoyo en este proyecto de investigación.
