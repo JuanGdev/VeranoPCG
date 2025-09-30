@@ -247,7 +247,7 @@ Este proyecto fue desarrollado durante el **Verano de la Ciencia UG - Edición X
 - 👨‍🏫 Dr. Uriel Haile
 
 **Equipo de desarrollo:**
-- 💻 Juan G. (Repositorio y desarrollo principal)
+- 💻 Juan Aguilera (Repositorio y desarrollo principal)
 - 🎨 Martín
 - 🔧 Luis
 - 📊 Bertani
